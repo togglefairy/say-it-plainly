@@ -23,7 +23,7 @@ A grade level describes how hard the text is to read. It does not mean the copy 
 
 ## Settings
 
-Ask once if the user hasn't said. Otherwise use the defaults.
+Don't stop to ask. Run with the defaults below unless the user said otherwise. Name the settings you used in the chat summary, like "Using general audience (grade 8). Tell me if you want expert mode or a keep list."
 
 **Audience**
 - **General (default):** target grade 8, flag anything above grade 9.
@@ -123,7 +123,7 @@ Flag when the grade is above the audience limit. Show the grade, the target, and
 | assistance | help |
 | on a monthly basis | monthly |
 | a number of | many, some |
-| and/or | A or B or both |
+| and/or | "A or B," or "A, B, or both" |
 
 - Flag acronyms that are not spelled out the first time they appear.
 - For mixed audiences, suggest the plain term first with the technical term in parentheses.
@@ -155,29 +155,65 @@ List findings from high to low.
 
 ## Output format
 
-**Chat first, canvas on request.**
+**Everything goes on the canvas. Chat gets a short summary.**
 
-Start with a short summary:
+### In chat
+
+Show only the summary table, then one line about what you added:
 
 | Check | Result |
 |---|---|
-| Reading level | Grade 9.4 (target 8, limit 9) |
+| Reading level | Grade 14.4 → 7.9 (target 8, limit 9) |
 | Long sentences | 2 flagged |
 | Jargon and acronyms | 3 flagged |
 | Passive voice | 1 flagged |
 | Hidden verbs | Pass |
 
-Then list problems only. Skip anything that passed. Use this format:
+"I added 6 notes and a suggested version next to Frame 1."
 
-**[Check name] · [Severity]** Where it is and what's wrong
-- **Fix:** "suggested copy"
-- **Alt:** "another option" *(only if truly different)*
+Don't list each finding in chat. If the user asks to see the details in chat, then list them.
 
-For reading level, add the counts: words, sentences, syllables, grade, and reading ease.
+### Keep it fast
 
-End with: "Want me to add any of these to the canvas?"
+Use only two script calls per run:
 
-**If the user says yes:** add one simple note per finding next to the selected frame, stacked from top to bottom. Each note shows the check name, severity, the issue, and the fix. Don't edit the original layers.
+1. **First call:** read all the visible text layers in the selection and score each block with the reading level code.
+2. **Second call:** score the suggested version, then build everything on the canvas in that same call: the suggested version, its label, the notes title, all the cards, and the group. Load fonts once at the start.
+
+Don't make a separate call for each card.
+
+### On the canvas
+
+Lay things out left to right so the user can compare:
+
+**Original frame → Suggested version → Notes**
+
+Keep 40px between each one. Never edit the original layers or text.
+
+**1. Suggested version**
+
+Make this for any block of 70 words or more. For microcopy, the notes are enough.
+
+- Duplicate the block and place it to the right of the original. Name it "[original name] · say-it-plainly suggestion."
+- Apply all the fixes together, so one fix doesn't undo another. For example, if an acronym is undefined, don't reuse it unexplained in a rewritten sentence.
+- Re-score the new version with the same code. Add a small label above it: "Suggested version · Grade 14.4 → 7.9."
+- Compare it to the original. If any fact, number, step, or requirement changed or went missing, say so in a "Check before using" note. If nothing changed, say "No details removed."
+- Keep words on the keep list as written.
+- **Only change what a finding calls for.** Don't swap other words, like "instructors" to "teachers." If you change anything a finding didn't ask for, list it in the "Check before using" note.
+- **Never guess what an acronym stands for.** In the suggested version, write a placeholder like "[spell out CHW] (CHW)" so the user fills it in.
+
+**2. Note cards**
+
+Add one card per finding. Problems only. Skip anything that passed.
+
+- Place the cards in a column to the right of the suggested version, with a title: "Plain-language review notes."
+- Stack them from high to low severity, with 12px between cards.
+- Each card shows: **[Check name] · [Severity]**, then **Issue**, then **Fix**, then **Alt** only if truly different. Add a **Caution** line when a fix might change the meaning.
+- **Explain each issue once.** Put the explanation on the issue's own card only. Fixes on other cards can still include a placeholder like "[spell out CHW]," but don't repeat the caution there.
+- **End with a "Check before using" card** that works as a short to-do list: one line per action, like "Fill in [spell out CHW]" or "Confirm 'meet the needs' keeps the meaning of 'sufficient.'" No explanations, since those are on the other cards. If there's nothing to check, say "No details removed." 
+- For reading level, include the counts: words, sentences, syllables, grade, and reading ease.
+- Group the title, cards, and suggested version as "say-it-plainly review" so they're easy to move or delete.
+- On a rerun, delete the old "say-it-plainly review" group for that frame first, so they don't pile up.
 
 ## Limits to keep in mind
 

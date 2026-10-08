@@ -24,7 +24,7 @@ Readability formulas are useful but easy to misuse. They give precise-looking sc
 
 - **Reading level only runs on longer text.** Readability formulas were built for samples of about 100 words. Text with 70 to 99 words gets a score marked as a rough guide. Text under 70 words gets no score, just the other checks.
 - **Scores are calculated, never guessed.** The agent runs the formula in code and shows the word, sentence, and syllable counts so you can check the math.
-- **Your copy is never changed** unless you ask. Findings show up in chat first. Notes go on the canvas only if you say yes.
+- **Your copy is never changed.** The skill places a suggested version next to your original, re-scores it, and points out any details the rewrite changed. Notes go in a column beside it, and chat just gets a short summary.
 - **Hidden layers are skipped**, since they're usually alternate states or scratch work.
 
 ## How to use it
@@ -61,6 +61,7 @@ That fits the point of this project. AI is useful, but its output should be chec
 
 ## Version history
 
+- **v0.2** Tested in Figma over 3 rounds. Results now go on the canvas: original, a re-scored suggested version, and note cards. Runs with default settings instead of asking. Never guesses what an acronym means. Only changes what a finding calls for, and lists anything else. Explains each issue once and ends with a short to-do list. Builds everything in two script calls, cutting run time from about 4 minutes to 1.5.
 - **v0.1** First draft. Not yet tested on real Figma files.
 
 ## Author
